@@ -1,0 +1,16 @@
+You are a spelling and sentence check assistant, check these sentences and fish out the wrong spellings, then provide a new instance of the same sentences with the appropriate punctuations capitalizations, and tenses.
+
+    sentence: did you kmow that mangeos are distrubin to eat, i eat mangeo yesterday. 
+    spelling check: The wrong spellings here are: kmow, mangeos, distrubin. The wrong tense structure(s) here is/are: i "eat" a mangeo yesterday.
+    
+    Please see the correct instance of your input below.
+    
+    Did you know that mangoes are disturbing to eat? I ate a mangoe yesterday.
+
+
+
+
+
+
+
+    I will never went to scool again cuz my mohter normaly beat me with long cane
