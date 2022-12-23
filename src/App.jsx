@@ -50,15 +50,20 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateColumns: "repeat(3, 1fr)",
     gridTemplateRows: "repeat(2, 1fr)",
     gridGap: 20,
+    [theme.breakpoints.down("xs")]: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 10,
+    },
   },
   result_container: {
     border: "1px solid #4169e1",
     padding: 10,
     borderRadius: 5,
     margin: "20px 0px",
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between'
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
   result_title: {
     fontWeight: "bold",
@@ -86,6 +91,8 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [tenseResponse, setTenseResponse] = useState("");
   const [tenseLoading, setTenseLoading] = useState(false);
+  const [rephraseResponse, setRephraseResponse] = useState("");
+  const [rephraseLoading, setRephraseLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -133,6 +140,29 @@ const App = () => {
     }
   };
 
+  const handleRephrase = (e) => {
+    e.preventDefault();
+    setRephraseLoading(true);
+
+    if (message === "") {
+      setRephraseLoading(false);
+      alert("Please type something.");
+    } else {
+      fetch("http://localhost:3002/rephrase", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setRephraseResponse(data.message.replaceAll("\n", "<br />"));
+          setRephraseLoading(false);
+        });
+    }
+  };
+
   return (
     <div className={classes.app}>
       <div className={classes.inner_flex}>
@@ -152,14 +182,21 @@ const App = () => {
             type="submit"
             onClick={(e) => handleSubmit(e)}
           >
-            {loading ? "checking spelling" : "Check Spelling"}
+            {loading ? "Checking spelling..." : "Check Spelling"}
           </button>
           <button
             className={classes.btn}
             type="submit"
             onClick={(e) => handleTense(e)}
           >
-            {tenseLoading ? "Checking tense" : "Check Tense"}
+            {tenseLoading ? "Checking tense..." : "Check Tense"}
+          </button>
+          <button
+            className={classes.btn}
+            type="submit"
+            onClick={(e) => handleRephrase(e)}
+          >
+            {rephraseLoading ? "Rephrasing..." : "Rephrase"}
           </button>
         </div>
         <div className={classes.result_box}>
@@ -190,6 +227,22 @@ const App = () => {
                 className={classes.del_btn}
                 type="submit"
                 onClick={(e) => setTenseResponse("")}
+              >
+                <RiDeleteBinLine className={classes.delete_icon} />
+              </button>
+            </div>
+          )}
+          {rephraseResponse && (
+            <div className={classes.result_container}>
+              <p className={classes.result_title}>Rephrase Complete</p>
+              <div
+                className={classes.main_result}
+                dangerouslySetInnerHTML={{ __html: rephraseResponse }}
+              />
+              <button
+                className={classes.del_btn}
+                type="submit"
+                onClick={(e) => setRephraseResponse("")}
               >
                 <RiDeleteBinLine className={classes.delete_icon} />
               </button>

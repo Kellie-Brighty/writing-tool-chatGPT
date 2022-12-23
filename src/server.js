@@ -7,9 +7,13 @@ const { Configuration, OpenAIApi } = OpenAI;
 const app = express();
 const port = 3002;
 
+const apiKey = process.env.OPENAI_API_KEY
+
+console.log(apiKey)
+
 const configuration = new Configuration({
   organization: "org-avY44frD4bX5D4oCBShR66Vl",
-  apiKey: "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",
+  apiKey: process.env.OPENAI_API_KEY
 });
 const openai = new OpenAIApi(configuration);
 
@@ -52,6 +56,26 @@ app.post("/tense", async (req, res) => {
   }
 });
 
+app.post("/rephrase", async (req, res) => {
+  const { message } = req.body;
+  const response = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: `Please provide two other different ways this can be re-written, which should still make actual sense and pass the same message accross.
+    sentence: ${message}
+    spelling check:`,
+    max_tokens: 2048,
+    temperature: 0.5,
+  });
+  console.log(response.data);
+  if (response.data.choices) {
+    res.json({
+      message: response.data.choices[0].text,
+    });
+  }
+});
+
 app.listen(port, () => {
   console.log(`App listening on http://localhost:${port}`);
 });
+
+module.exports = app;
