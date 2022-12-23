@@ -171,6 +171,7 @@ const App = () => {
     <div className={classes.app}>
       <div className={classes.inner_flex}>
         <h4>My expert writing tool</h4>
+        Adding a text
         <form className={classes.form}>
           <textarea
             value={message}
