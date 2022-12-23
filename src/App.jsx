@@ -102,14 +102,17 @@ const App = () => {
       setLoading(false);
       alert("Please type something.");
     } else {
-      fetch("http://localhost:3002/", {
+      fetch("https://chatgpt-writing-tool.onrender.com/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ message }),
       })
-        .then((res) => res.json())
+        .then((res) => {
+          console.log(res.json());
+          console.log(res.status);
+        })
         .then((data) => {
           setResponse(data.message.replaceAll("\n", "<br />"));
           setLoading(false);
@@ -133,7 +136,10 @@ const App = () => {
           },
           body: JSON.stringify({ message }),
         })
-          .then((res) => res.json())
+          .then((res) => {
+            res.json();
+            console.log(res.status);
+          })
           .then((data) => {
             setTenseResponse(data.message.replaceAll("\n", "<br />"));
             setTenseLoading(false);

@@ -33,9 +33,10 @@ app.post("/", async (req, res) => {
   });
   console.log(response.data);
   if (response.data.choices) {
-    res.json({
+    const result = res.json({
       message: response.data.choices[0].text,
     });
+    res.send(result)
   }
 });
 
@@ -51,9 +52,10 @@ app.post("/tense", async (req, res) => {
   });
   console.log(response.data);
   if (response.data.choices) {
-    res.json({
+    const result = res.json({
       message: response.data.choices[0].text,
     });
+    res.send(result)
   }
 });
 
@@ -69,9 +71,10 @@ app.post("/rephrase", async (req, res) => {
   });
   console.log(response.data);
   if (response.data.choices) {
-    res.json({
+    const result = res.json({
       message: response.data.choices[0].text,
     });
+    res.send(result)
   }
 });
 
