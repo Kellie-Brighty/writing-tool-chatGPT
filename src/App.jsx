@@ -125,18 +125,22 @@ const App = () => {
       setTenseLoading(false);
       alert("Please type something.");
     } else {
-      fetch("http://localhost:3002/tense", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setTenseResponse(data.message.replaceAll("\n", "<br />"));
-          setTenseLoading(false);
-        });
+      try {
+        fetch("http://localhost:3002/tense", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            setTenseResponse(data.message.replaceAll("\n", "<br />"));
+            setTenseLoading(false);
+          });
+      } catch (err) {
+        console.log(err.message);
+      }
     }
   };
 
