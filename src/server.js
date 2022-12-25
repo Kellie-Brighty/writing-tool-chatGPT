@@ -23,21 +23,27 @@ app.get("/", (req, res) => {
 
 app.post("/", async (req, res) => {
   const { message } = req.body;
-  const response = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: `Please provide a list of the wrong spellings in the sentence, then provide a new instance of the sentence with the corrected spellings and punctuations.
-    sentence: ${message}
-    spelling check:`,
-    max_tokens: 2048,
-    temperature: 0.5,
-  });
-  console.log(response.data);
-  if (response.data.choices) {
-    return res.json({
-      message: response.data.choices[0].text,
+  try {
+    console.log("Mesage>>", message);
+    const response = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: `Please provide a list of the wrong spellings in the sentence, then provide a new instance of the sentence with the corrected spellings and punctuations.
+      sentence: ${message}
+      spelling check:`,
+      max_tokens: 2048,
+      temperature: 0.5,
     });
+    console.log(response.data);
+    if (response.data.choices) {
+      return res.json({
+        message: response.data.choices[0].text,
+      });
+    }
+    return res.json({ message: response.data });
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).json({ message: err.message });
   }
-  return res.json({message: response.data})
 });
 
 app.post("/tense", async (req, res) => {
