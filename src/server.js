@@ -18,8 +18,8 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.send("Hello server is working!!")
-})
+  res.send("Hello server is working!!");
+});
 
 app.post("/", async (req, res) => {
   const { message } = req.body;
@@ -33,11 +33,11 @@ app.post("/", async (req, res) => {
   });
   console.log(response.data);
   if (response.data.choices) {
-    const result = res.json({
+    return res.json({
       message: response.data.choices[0].text,
     });
-    res.send(result)
   }
+  return res.json({message: response.data})
 });
 
 app.post("/tense", async (req, res) => {
@@ -52,10 +52,9 @@ app.post("/tense", async (req, res) => {
   });
   console.log(response.data);
   if (response.data.choices) {
-    const result = res.json({
+    res.json({
       message: response.data.choices[0].text,
     });
-    res.send(result)
   }
 });
 
@@ -71,10 +70,9 @@ app.post("/rephrase", async (req, res) => {
   });
   console.log(response.data);
   if (response.data.choices) {
-    const result = res.json({
+    res.json({
       message: response.data.choices[0].text,
     });
-    res.send(result)
   }
 });
 
