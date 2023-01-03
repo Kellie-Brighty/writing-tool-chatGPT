@@ -68,7 +68,7 @@ app.post("/rephrase", async (req, res) => {
   const { message } = req.body;
   const response = await openai.createCompletion({
     model: "text-davinci-003",
-    prompt: `Please provide two other different ways this can be re-written, which should still make actual sense and pass the same message accross.
+    prompt: `Please provide three other different ways this can be re-written, which should still make actual sense and pass the same message accross.
     sentence: ${message}
     spelling check:`,
     max_tokens: 2048,
@@ -78,6 +78,24 @@ app.post("/rephrase", async (req, res) => {
   if (response.data.choices) {
     res.json({
       message: response.data.choices[0].text,
+    });
+  }
+});
+
+app.post("/translate_spanish", async (req, res) => {
+  const { response } = req.body;
+  const resp = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: `Translate this sentence or sentences to Spanish.
+    sentence: ${response}
+    translation:`,
+    max_tokens: 2048,
+    temperature: 0.5,
+  });
+  console.log(resp.data);
+  if (resp.data.choices) {
+    res.json({
+      message: resp.data.choices[0].text,
     });
   }
 });
